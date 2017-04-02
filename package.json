@@ -1,0 +1,49 @@
+{
+  "name": "insticator-codetest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server/server.js",
+    "dev": "webpack -d --watch --progress --colors",
+    "build": "NODE_ENV=production webpack -p",
+    "compile": "webpack",
+    "commit": "git-cz",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sho13/insticator-codetest.git"
+  },
+  "author": "Sean Ho <sean.ho.0103@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sho13/insticator-codetest/issues"
+  },
+  "homepage": "https://github.com/sho13/insticator-codetest#readme",
+  "dependencies": {
+    "babel-core": "6.24.0",
+    "babel-loader": "6.4.1",
+    "babel-preset-env": "1.3.2",
+    "babel-preset-latest": "6.24.0",
+    "babel-preset-react": "6.23.0",
+    "body-parser": "1.17.1",
+    "express": "4.15.2",
+    "nodemon": "1.11.0",
+    "path": "0.12.7",
+    "react": "15.4.2",
+    "react-dom": "15.4.2",
+    "react-redux": "5.0.3",
+    "redux": "3.6.0",
+    "webpack": "2.3.2",
+    "webpack-dev-middleware": "1.10.1"
+  },
+  "devDependencies": {
+    "commitizen": "2.9.6"
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    }
+  }
+}
