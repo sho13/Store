@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 const port = process.env.PORT || 5000;
 
 app.get('/shopitems', (req, res) => {
-  return storeItems;
+  res.send(storeItems);
 })
 
 app.listen(port, (err) => {

@@ -1,7 +1,9 @@
+const webpack = require('webpack');
 const path = require('path');
 
 module.exports = {
   context: path.join(__dirname, 'client/src'),
+  devtool: '#eval-source-map',
   entry: [
     './app.jsx',
   ],
@@ -25,4 +27,9 @@ module.exports = {
       path.join(__dirname, 'node_modules'),
     ],
   },
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('production'),
+    }),
+  ]
 };
