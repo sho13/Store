@@ -15,20 +15,35 @@ class Index extends Component {
   componentWillMount() {
      axios.get('/shopitems').
      then((res) => {
-      //  console.log(res.data)
        this.props.dispatch(shopItems(res.data))
      })
   }
 
-  componentDidMount() {
-    console.log(this.props)
+  storeRender() {
+    if(!this.props.shopItems.shopItems) {
+      return(
+        <div>loading store...</div>
+      )
+    }
+    let shopItems = this.props.shopItems.shopItems
+    return shopItems.map((value, i) => {
+      return (
+        <div>
+          <h2>{value.itemName}</h2>
+          <img src={value.imgSrc} />
+          <p>${value.price}</p>
+          <p>Remaining: {value.quantityRemaining}</p>
+          <button>Add to Cart</button>
+        </div>
+      )
+    })
   }
 
   render() {
     return (
       <div>
         <h1>Shop</h1>
-        <p></p>
+        {this.storeRender()}
       </div>
     )
   }

@@ -1,5 +1,5 @@
 var DEFAULT_STATE = {
-  shopItems: {}
+  shopItems: []
 }
 
 const setItem = (state, action) => {
