@@ -2,8 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
+import { Router, hashHistory } from 'react-router';
 import promise from 'redux-promise';
-// import reducers from './reducers';
+import reducers from './reducers';
+import routes from './routes.jsx';
+
 // import style from '../style/main.scss';
 
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore);

@@ -10,6 +10,10 @@ app.use(bodyParser.json());
 
 const port = process.env.PORT || 5000;
 
+app.get('/shopitems', (req, res) => {
+  return storeItems;
+})
+
 app.listen(port, (err) => {
   if(err) {
     console.log('Error occurred : ', err);
