@@ -4,38 +4,29 @@ var DEFAULT_STATE = {
 }
 
 const setItem = (state, action) => {
-  console.log('state:: ', state);
-  console.log('action:: ', action);
   const newState = {}
   Object.assign(newState, state, { shopItems: action.payLoad })
   return newState
 }
 
 const setQuantity = (state, action) => {
-  console.log('UPDATE_QUANTITY state:: ', state);
-  console.log('UPDATE_QUANTITY action:: ', action)
-   let newArr = [...state.shopItems.slice(0, action.index),
-     action.obj,
-     ...state.shopItems.slice(action.index + 1)]
-   const newState = {}
-   Object.assign(newState, state, { shopItems: newArr })
-   return newState
- }
+  let newArr = [...state.shopItems.slice(0, action.index),
+   action.obj,
+   ...state.shopItems.slice(action.index + 1)]
+  const newState = {}
+  Object.assign(newState, state, { shopItems: newArr })
+  return newState
+}
 
 const addItem = (state, action) => {
-  console.log('ADD_CART_ITEMS state:: ', state);
-  console.log('ADD_CART_ITEMS action:: ', action)
   var newObj = Object.assign({}, state.cartItems)
   newObj[action.name] = action.obj;
   let newState = {}
   Object.assign(newState, state, {cartItems: newObj})
-  console.log(newState);
   return newState
 }
 
 const removeItem = (state, action) => {
-  console.log('REMOVE_CART_ITEMS state:: ', state);
-  console.log('REMOVE_CART_ITEMS action:: ', action);
   var newObj = Object.assign({}, state.cartItems);
   let newState = {}
   Object.assign(newState, state, {cartItems: newObj})
@@ -43,10 +34,7 @@ const removeItem = (state, action) => {
 }
 
 const checkout = (state, action) => {
-  console.log('CHECKOUT state:: ', state);
-  console.log('CHECKOUT action:: ', action)
   var newObj = Object.assign({}, action.obj);
-  console.log(newObj);
   let newState = {};
   Object.assign(newState, state, {cartItems: newObj})
   return newState;

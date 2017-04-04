@@ -54,7 +54,7 @@ class Store extends Component {
         <div>
           <h2>{value.itemName}</h2>
           <img src={value.imgSrc} />
-          <p>${value.price}</p>
+          <p>${value.price.toFixed(2)}</p>
           <p>Remaining: {value.quantityRemaining}</p>
           <button onClick={(e) => this.updateQuantity(i, -1)}>Add to Cart</button>
         </div>

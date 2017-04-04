@@ -37,10 +37,14 @@ class Cart extends Component {
   }
 
   checkOut() {
-    alert('Thank You For Shopping At The Shop')
     var cart = this.props.shopItems.cartItems;
-    cart = {};
-    this.props.dispatch(checkout(cart));
+    if(Object.keys(cart).length === 0 && cart.constructor === Object){
+      alert('Please add your items to cart!')
+    } else {
+      cart = {};
+      this.props.dispatch(checkout(cart));
+      alert('Thank you for shopping!')
+    }
   }
 
   insideCart() {
@@ -70,7 +74,8 @@ class Cart extends Component {
         return this.props.shopItems.cartItems[value]['price'] * this.props.shopItems.cartItems[value]['quantity'];
       }).reduce((a,b) => {
         return a + b;
-      }, 0).toFixed(2);
+      }, 0)
+      .toFixed(2);
   }
 
   render() {
