@@ -9,36 +9,38 @@ class Cart extends Component {
     this.state = null;
     this.updateQuantity = this.updateQuantity.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
+    this.checkout = this.checkOut.bind(this);
   }
 
-  deleteItem(itemName) {
+  deleteItem(itemName, del) {
     var cart = this.props.shopItems.cartItems
-    this.updateQuantity(itemName, cart[itemName]["quantity"]);
-    console.log('cart::', cart)
+    if(del) {
+      this.updateQuantity(itemName, cart[itemName]["quantity"]);
+    }
     delete cart[itemName];
-    console.log('cart::', cart)
-    this.props.dispatch(addToCart(cart));
+    this.props.dispatch(removeFromCart(cart));
   }
 
-  updateQuantity(index, action) {
+  updateQuantity(item, action) {
     var obj = this.props.shopItems.shopItems;
-    for(var i = 0; i < obj.length; i++) {
-      if(obj[i]['itemName'] === index) {
-        if(obj[i]['quantityRemaining'] > 0) {
-          obj[i]['quantityRemaining'] = obj[i]['quantityRemaining'] + action
-          this.props.dispatch(updateItem(index, obj));
-          var item = this.props.shopItems.cartItems[obj[i]["itemName"]]
-          item.quantity += -(action)
-          if(item.quantity === 0) {
-            console.log('DELETE THIS BITCH')
-            this.deleteItem(item);
-          }
-        } else if(obj[i]['quantityRemaining'] === 0) {
-            obj[i]['quantityRemaining'] = 'Sold out'
-            this.props.dispatch(updateItem(index, obj));
-        }
+    var cart = this.props.shopItems.cartItems;
+    var index = this.props.shopItems.cartItems[item]['index'];
+
+    if(obj[index]['quantityRemaining'] > 0 || action > 0) {
+      obj[index]['quantityRemaining'] = obj[index]['quantityRemaining'] + action
+      this.props.dispatch(updateItem(index, obj[index]));
+      this.props.shopItems.cartItems[item]['quantity'] += -(action);
+      if(this.props.shopItems.cartItems[item]['quantity'] === 0) {
+        this.deleteItem(item);
       }
     }
+  }
+
+  checkOut() {
+    alert('Thank You For Shopping At The Shop')
+    var cart = this.props.shopItems.cartItems;
+    cart = {};
+    this.props.dispatch(checkout(cart));
   }
 
   insideCart() {
@@ -53,11 +55,11 @@ class Cart extends Component {
       return (
         <div>
           <h5>{item}</h5>
-          <p>Price: {this.props.shopItems.cartItems[item]['price']}</p>
+          <p>Price: ${this.props.shopItems.cartItems[item]['price'].toFixed(2)}</p>
           <span><p>Quantity: {this.props.shopItems.cartItems[item]['quantity']}</p></span>
           <span><button onClick={(e) => this.updateQuantity(item, -1)}> Increase Quantity </button></span>
           <span><button onClick={(e) => this.updateQuantity(item, 1)}> Decrease Quantity </button></span>
-          <span><button onClick={(e) => this.deleteItem(item)}>Remove Item</button></span>
+          <span><button onClick={(e) => this.deleteItem(item, true)}>Remove Item</button></span>
         </div>
       )
     })
@@ -77,7 +79,7 @@ class Cart extends Component {
         <h1>Cart</h1>
         {this.insideCart()}
         <p>Total: ${this.totalCost()}</p>
-        <button onClick={() => checkout()}>Checkout</button>
+        <button onClick={(e) => this.checkout()}>Checkout</button>
       </div>
     )
   }

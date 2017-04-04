@@ -29,16 +29,16 @@ export function addToCart(obj, name) {
   }
 }
 
-export function removeFromCart(obj, name) {
+export function removeFromCart(obj) {
   return {
     type: REMOVE_CART_ITEMS,
-    obj,
-    name
+    obj
   }
 }
 
-export function checkout() {
+export function checkout(obj) {
   return {
-    type: CHECKOUT
+    type: CHECKOUT,
+    obj
   }
 }

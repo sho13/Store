@@ -31,19 +31,17 @@ class Store extends Component {
         item.quantity = item.quantity + 1
         this.props.dispatch(addToCart(item, obj["itemName"]))
       } else {
-         var item = {}
-      item = {
-        "price": obj["price"],
-        "quantity": 1
-      }
+          var item = {
+            "index": index,
+            "price": obj["price"],
+            "quantity": 1
+          }
+
       this.props.dispatch(addToCart(item, obj["itemName"]))
       }
-    } else if(obj['quantityRemaining'] === 0) {
-      obj['quantityRemaining'] = 'Sold out'
-      this.props.dispatch(updateItem(index, obj));
     }
   }
-  
+
   storeRender() {
     if(!this.props.shopItems.shopItems) {
       return(

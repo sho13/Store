@@ -37,31 +37,33 @@ const removeItem = (state, action) => {
   console.log('REMOVE_CART_ITEMS state:: ', state);
   console.log('REMOVE_CART_ITEMS action:: ', action);
   var newObj = Object.assign({}, state.cartItems);
-  delete newObj[action.name]
   let newState = {}
   Object.assign(newState, state, {cartItems: newObj})
-  console.log(newState);
   return newState
 }
 
 const checkout = (state, action) => {
-  let newState = {}
-  Object.assign(newState, state, {cartItems: null})
+  console.log('CHECKOUT state:: ', state);
+  console.log('CHECKOUT action:: ', action)
+  var newObj = Object.assign({}, action.obj);
+  console.log(newObj);
+  let newState = {};
+  Object.assign(newState, state, {cartItems: newObj})
   return newState;
 }
 
 export default function(state = DEFAULT_STATE, action) {
   switch(action.type) {
-    case 'SHOP_ITEMS' :
+    case 'SHOP_ITEMS':
       return setItem(state, action);
-    case 'UPDATE_QUANTITY' :
+    case 'UPDATE_QUANTITY':
       return setQuantity(state, action);
-    case 'ADD_CART_ITEMS' :
+    case 'ADD_CART_ITEMS':
       return addItem(state, action);
-    case 'ADD_CART_ITEMS' :
+    case 'REMOVE_CART_ITEMS':
       return removeItem(state, action);
-    case 'CHECKOUT' :
-      return checkout();
+    case 'CHECKOUT':
+      return checkout(state, action);
     default:
       return state;
   }
