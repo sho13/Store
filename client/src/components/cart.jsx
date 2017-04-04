@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { updateItem, checkout } from '../actions/index.js'
+import { updateItem, checkout, addToCart, removeFromCart } from '../actions/index.js'
 
 class Cart extends Component {
   constructor(props) {
@@ -11,32 +11,59 @@ class Cart extends Component {
   }
 
   updateQuantity(index, action) {
-    var obj = this.props.shopItems.shopItems[index];
-    if(obj['quantityRemaining'] > 0) {
-      obj['quantityRemaining'] = obj['quantityRemaining'] + action
-      this.props.dispatch(updateItem(index, obj));
-    } else if(obj['quantityRemaining'] === 0) {
-      obj['quantityRemaining'] = 'Sold out'
-      this.props.dispatch(updateItem(index, obj));
+    var obj = this.props.shopItems.shopItems;
+    for(var i = 0; i < obj.length; i++) {
+      if(obj[i]['itemName'] === index) {
+        if(obj[i]['quantityRemaining'] > 0) {
+          obj[i]['quantityRemaining'] = obj[i]['quantityRemaining'] + action
+          this.props.dispatch(updateItem(index, obj));
+          var item = this.props.shopItems.cartItems[obj[i]["itemName"]]
+          item.quantity += -(action)
+          if(item.quantity === 0) {
+            this.props.dispatch(removeFromCart(item, obj[i]["itemName"]))
+          }
+        } else if(obj[i]['quantityRemaining'] === 0) {
+            obj[i]['quantityRemaining'] = 'Sold out'
+        }
+      }
     }
   }
 
   insideCart() {
-    return(
-      <div>
-        <button onClick={(e, i) => updateQuantity(i, -1)}> Increase Quantity </button>
-        <button onClick={(e, i) => updateQuantity(i, 1)}> Decrease Quantity </button>
-      </div>
-    )
+    if(!this.props.shopItems.cartItems) {
+      return (
+        <div>
+          <p>Loading cart</p>
+        </div>
+      )
+    }
+    return Object.keys(this.props.shopItems.cartItems).map(item => {
+      return (
+        <div>
+          <h5>{item}</h5>
+          <p>Price: {this.props.shopItems.cartItems[item]['price']}</p>
+          <span><p>Quantity: {this.props.shopItems.cartItems[item]['quantity']}</p></span>
+          <span><button onClick={(e) => this.updateQuantity(item, -1)}> Increase Quantity </button></span>
+          <span><button onClick={(e) => this.updateQuantity(item, 1)}> Decrease Quantity </button></span>
+        </div>
+      )
+    })
+  }
+
+  totalCost() {
+    return Object.keys(this.props.shopItems.cartItems).map((value) => {
+        return this.props.shopItems.cartItems[value]['price'] * this.props.shopItems.cartItems[value]['quantity'];
+      }).reduce((a,b) => {
+        return a + b;
+      }, 0).toFixed(2);
   }
 
   render() {
-    console.log(this.props.shopItems);
     return (
       <div>
         <h1>Cart</h1>
-        {}
-        <p>Total: </p>
+        {this.insideCart()}
+        <p>Total: ${this.totalCost()}</p>
         <button onClick={() => checkout()}>Checkout</button>
       </div>
     )
@@ -45,7 +72,8 @@ class Cart extends Component {
 
 function mapStateToProps(state) {
   return {
-    shopItems: state.shopItems
+    shopItems: state.shopItems,
+    cartItems: state.cartItems
   }
 }
 

@@ -17,34 +17,33 @@ class Store extends Component {
   componentWillMount() {
      axios.get('/shopitems').
      then((res) => {
-       const data = res.data.map((val) => {
-         return {
-           itemName: val.itemName,
-           imgSrc: val.imgSrc,
-           price: val.price,
-           quantityRemaining: val.quantityRemaining,
-           quantity: 0,
-         }
-       })
-       console.log(data);
        this.props.dispatch(shopItems(res.data))
      })
   }
 
   updateQuantity(index, action) {
     var obj = this.props.shopItems.shopItems[index];
-    console.log(obj);
     if(obj['quantityRemaining'] > 0) {
       obj['quantityRemaining'] = obj['quantityRemaining'] + action
       this.props.dispatch(updateItem(index, obj));
-      obj['quantity'] += 1;
-      this.props.dispatch(addToCart(obj))
+      if(this.props.shopItems.cartItems[obj["itemName"]]){
+        var item = this.props.shopItems.cartItems[obj["itemName"]]
+        item.quantity = item.quantity + 1
+        this.props.dispatch(addToCart(item, obj["itemName"]))
+      } else {
+         var item = {}
+      item = {
+        "price": obj["price"],
+        "quantity": 1
+      }
+      this.props.dispatch(addToCart(item, obj["itemName"]))
+      }
     } else if(obj['quantityRemaining'] === 0) {
       obj['quantityRemaining'] = 'Sold out'
       this.props.dispatch(updateItem(index, obj));
     }
   }
-
+  
   storeRender() {
     if(!this.props.shopItems.shopItems) {
       return(

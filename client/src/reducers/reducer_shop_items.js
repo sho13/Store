@@ -1,6 +1,6 @@
 var DEFAULT_STATE = {
   shopItems: [],
-  cartItems: []
+  cartItems: {}
 }
 
 const setItem = (state, action) => {
@@ -23,13 +23,31 @@ const setQuantity = (state, action) => {
  }
 
 const addItem = (state, action) => {
-  console.log('CART_ITEMS state:: ', state);
-  console.log('CART_ITEMS action:: ', action)
-  var newArr = [...state.cartItems]
-  newArr.push(action.obj)
+  console.log('ADD_CART_ITEMS state:: ', state);
+  console.log('ADD_CART_ITEMS action:: ', action)
+  var newObj = Object.assign({}, state.cartItems)
+  newObj[action.name] = action.obj;
   let newState = {}
-  Object.assign(newState, state, {cartItems: newArr})
+  Object.assign(newState, state, {cartItems: newObj})
+  console.log(newState);
   return newState
+}
+
+const removeItem = (state, action) => {
+  console.log('REMOVE_CART_ITEMS state:: ', state);
+  console.log('REMOVE_CART_ITEMS action:: ', action);
+  var newObj = Object.assign({}, state.cartItems);
+  delete newObj[action.name]
+  let newState = {}
+  Object.assign(newState, state, {cartItems: newObj})
+  console.log(newState);
+  return newState
+}
+
+const checkout = (state, action) => {
+  let newState = {}
+  Object.assign(newState, state, {cartItems: null})
+  return newState;
 }
 
 export default function(state = DEFAULT_STATE, action) {
@@ -38,8 +56,12 @@ export default function(state = DEFAULT_STATE, action) {
       return setItem(state, action);
     case 'UPDATE_QUANTITY' :
       return setQuantity(state, action);
-    case 'CART_ITEMS' :
+    case 'ADD_CART_ITEMS' :
       return addItem(state, action);
+    case 'ADD_CART_ITEMS' :
+      return removeItem(state, action);
+    case 'CHECKOUT' :
+      return checkout();
     default:
       return state;
   }
