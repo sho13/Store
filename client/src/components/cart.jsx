@@ -8,6 +8,16 @@ class Cart extends Component {
     super(props)
     this.state = null;
     this.updateQuantity = this.updateQuantity.bind(this);
+    this.deleteItem = this.deleteItem.bind(this);
+  }
+
+  deleteItem(itemName) {
+    var cart = this.props.shopItems.cartItems
+    this.updateQuantity(itemName, cart[itemName]["quantity"]);
+    console.log('cart::', cart)
+    delete cart[itemName];
+    console.log('cart::', cart)
+    this.props.dispatch(addToCart(cart));
   }
 
   updateQuantity(index, action) {
@@ -20,10 +30,12 @@ class Cart extends Component {
           var item = this.props.shopItems.cartItems[obj[i]["itemName"]]
           item.quantity += -(action)
           if(item.quantity === 0) {
-            this.props.dispatch(removeFromCart(item, obj[i]["itemName"]))
+            console.log('DELETE THIS BITCH')
+            this.deleteItem(item);
           }
         } else if(obj[i]['quantityRemaining'] === 0) {
             obj[i]['quantityRemaining'] = 'Sold out'
+            this.props.dispatch(updateItem(index, obj));
         }
       }
     }
@@ -45,6 +57,7 @@ class Cart extends Component {
           <span><p>Quantity: {this.props.shopItems.cartItems[item]['quantity']}</p></span>
           <span><button onClick={(e) => this.updateQuantity(item, -1)}> Increase Quantity </button></span>
           <span><button onClick={(e) => this.updateQuantity(item, 1)}> Decrease Quantity </button></span>
+          <span><button onClick={(e) => this.deleteItem(item)}>Remove Item</button></span>
         </div>
       )
     })
