@@ -22,4 +22,3 @@ Requirements:
 
 Let us see your awesome store!:
   Once complete, please send a github link or your project files to tianyi@insticator.com
-
