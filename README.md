@@ -16,4 +16,6 @@
 
 ## Tech Stack
 
-This store is built with React, Redux, Node, Node-Express and styled with Material-UI.
+This store is built with React, Redux, Node, Node-Express and styled with Material-UI and CSS.
+
+Material-UI components were styled via inline.
