@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { updateItem, checkout, addToCart, removeFromCart } from '../actions/index.js'
-import Style from '../style/style.css';
 import {List, ListItem} from 'material-ui/List';
 import Divider from 'material-ui/Divider';
 import Subheader from 'material-ui/Subheader';
@@ -97,20 +96,24 @@ class Cart extends Component {
 
       let rightIconMenu = (
         <IconMenu iconButtonElement={iconButtonElement}>
-          <div>
-            <MenuItem onTouchTap={this.handleTouchTap} onClick={(e) => this.updateQuantity(item, -1)}>
-              <AddButton />
+          <MenuItem onClick={(e) => {
+              this.updateQuantity(item, -1)
+              this.props.snack('Increased Quantity!')
+          }}>
+            <AddButton />
+          </MenuItem>
+          <MenuItem onClick={(e) => {
+              this.updateQuantity(item, 1)
+              this.props.snack('Decreased Quantity!')
+          }}>
+              <MinusButton />
+          </MenuItem>
+          <MenuItem onClick={(e) => {
+              this.deleteItem(item, true);
+              this.props.snack('Removed From Cart!');
+          }}>
+              <RemoveFromCart />
             </MenuItem>
-            <Snackbar
-              open={this.state.snackbar}
-              message="Increased Quantity!"
-              autoHideDuration={3000}
-              onRequestClose={this.handleRequestClose}
-            />
-          </div>
-          <MenuItem onClick={(e) => this.updateQuantity(item, -1)}><AddButton /></MenuItem>
-          <MenuItem onClick={(e) => this.updateQuantity(item, 1)}><MinusButton /></MenuItem>
-          <MenuItem onClick={(e) => this.deleteItem(item, true)}><RemoveFromCart /></MenuItem>
         </IconMenu>
       );
 

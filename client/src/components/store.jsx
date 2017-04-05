@@ -15,7 +15,6 @@ import AddShoppingCart from 'material-ui/svg-icons/action/add-shopping-cart';
 import ShoppingCart from 'material-ui/svg-icons/action/shopping-cart';
 import Shop from 'material-ui/svg-icons/action/store';
 import Cart from './cart.jsx';
-import Style from '../style/style.css';
 
 class Store extends Component {
   constructor(props) {
@@ -23,11 +22,15 @@ class Store extends Component {
     this.state = {
       open: false,
       snackbar: false,
+      message: '',
+      menusnack: false
     };
     this.updateQuantity = this.updateQuantity.bind(this);
     this.handleToggle = this.handleToggle.bind(this);
     this.handleTouchTap = this.handleTouchTap.bind(this);
     this.handleRequestClose = this.handleRequestClose.bind(this);
+    this.handleMenuClose = this.handleMenuClose.bind(this);
+    this.handleMenuSnack = this.handleMenuSnack.bind(this);
   }
 
   componentWillMount() {
@@ -41,12 +44,29 @@ class Store extends Component {
     this.setState({open: !this.state.open});
   }
 
-  handleTouchTap() {
-    this.setState({snackbar: true});
+  handleTouchTap(value) {
+    if(value) {
+      this.setState({snackbar: true});
+    }
   };
 
   handleRequestClose() {
     this.setState({snackbar: false});
+  };
+
+  handleMenuSnack(message){
+    console.log(message);
+    this.setState({
+      menusnack: true,
+      message: message
+    })
+  }
+
+  handleMenuClose() {
+    this.setState({
+      menusnack: false,
+      message: ''
+    });
   };
 
   updateQuantity(index, action) {
@@ -81,6 +101,13 @@ class Store extends Component {
       },
       button: {
         width: `100`,
+      },
+      gridTile: {
+        backgroundColor: `#FAFAFA`,
+        borderRadius: `4px`,
+        border: `1px solid black`,
+        marginTop: `10px`,
+        zIndex: `9999`
       }
     }
 
@@ -98,15 +125,16 @@ class Store extends Component {
           titleStyle={style.name}
           subtitle={`Quantity: ` + value.quantityRemaining}
           subtitleStyle={style.name}
+          style={style.gridTile}
           actionIcon={
             <div>
               <div style={style.button}>
-                <RaisedButton onTouchTap={this.handleTouchTap} icon={<AddShoppingCart />} onClick={(e) => this.updateQuantity(i, -1)} />
+                <RaisedButton onTouchTap={() => this.handleTouchTap(value.quantityRemaining)} icon={<AddShoppingCart />} onClick={(e) => this.updateQuantity(i, -1)} />
               </div>
               <Snackbar
                 open={this.state.snackbar}
                 message="Added to Cart!"
-                autoHideDuration={3000}
+                autoHideDuration={750}
                 onRequestClose={this.handleRequestClose}
               />
             </div>
@@ -128,6 +156,7 @@ class Store extends Component {
       },
       gridList: {
         width: 400,
+        height: 800,
         overflowY: 'auto',
       },
       appBar: {
@@ -159,7 +188,15 @@ class Store extends Component {
           open={this.state.open}
           onRequestChange={(open) => this.setState({open})}
         >
-          <Cart />
+        <div>
+          <Cart snack={this.handleMenuSnack}/>
+             <Snackbar
+              open={this.state.menusnack}
+              message={this.state.message}
+              autoHideDuration={1000}
+              onRequestClose={() => this.handleMenuClose()}
+            />
+        </div>
         </Drawer>
         <div style={styles.root}>
           <GridList
