@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { hashHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { shopItems, updateItem, addToCart } from '../actions/index';
 import axios from 'axios';
+import '../style/styles.css'
+import { shopItems, updateItem, addToCart } from '../actions/index';
 import { GridList, GridTile } from 'material-ui/GridList';
 import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
@@ -55,7 +56,6 @@ class Store extends Component {
   };
 
   handleMenuSnack(message){
-    console.log(message);
     this.setState({
       menusnack: true,
       message: message
@@ -93,21 +93,16 @@ class Store extends Component {
     const style = {
       name: {
         fontFamily: `sans-serif`,
-      },
-      images: {
-        marginLeft: 20,
-        width: 150,
-        height: 150,
-      },
-      button: {
-        width: `100`,
+        textAlign: `center`
       },
       gridTile: {
         backgroundColor: `#FAFAFA`,
         borderRadius: `4px`,
-        border: `1px solid black`,
+        border: `1px hidden black`,
         marginTop: `10px`,
-        zIndex: `9999`
+        marginLeft: `10px`,
+        width: `95%`,
+        boxShadow: `1px 5px 20px grey`
       }
     }
 
@@ -125,10 +120,11 @@ class Store extends Component {
           titleStyle={style.name}
           subtitle={`Quantity: ` + value.quantityRemaining}
           subtitleStyle={style.name}
+          className="gridTile"
           style={style.gridTile}
           actionIcon={
             <div>
-              <div style={style.button}>
+              <div className="button">
                 <RaisedButton onTouchTap={() => this.handleTouchTap(value.quantityRemaining)} icon={<AddShoppingCart />} onClick={(e) => this.updateQuantity(i, -1)} />
               </div>
               <Snackbar
@@ -140,8 +136,8 @@ class Store extends Component {
             </div>
           }
         >
-          <h2 style={style.name}>{value.itemName}</h2>
-          <img style={style.images} src={value.imgSrc} />
+          <h2 className="name">{value.itemName}</h2>
+          <img className="images" src={value.imgSrc} />
         </GridTile>
       )
     });
@@ -155,9 +151,9 @@ class Store extends Component {
         justifyContent: 'space-around',
       },
       gridList: {
+        marginTop: `10px`,
         width: 400,
-        height: 800,
-        overflowY: 'auto',
+        height: 840,
       },
       appBar: {
         top: '0',

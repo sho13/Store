@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { updateItem, checkout, addToCart, removeFromCart } from '../actions/index.js'
+import '../style/styles.css'
 import {List, ListItem} from 'material-ui/List';
 import Divider from 'material-ui/Divider';
 import Subheader from 'material-ui/Subheader';
@@ -54,8 +55,10 @@ class Cart extends Component {
     }
   }
 
-  handleTouchTap() {
-    this.setState({snackbar: true});
+  handleTouchTap(value) {
+    if(value){
+        this.setState({snackbar: true});
+    }
   };
 
   handleRequestClose() {
@@ -74,7 +77,6 @@ class Cart extends Component {
   }
 
   insideCart() {
-
     if(!this.props.shopItems.cartItems) {
       return (
         <div>
@@ -82,6 +84,7 @@ class Cart extends Component {
         </div>
       )
     }
+
     return Object.keys(this.props.shopItems.cartItems).map(item => {
 
       const iconButtonElement = (
@@ -97,8 +100,11 @@ class Cart extends Component {
       let rightIconMenu = (
         <IconMenu iconButtonElement={iconButtonElement}>
           <MenuItem onClick={(e) => {
+              let quantity = this.props.shopItems.shopItems[this.props.shopItems.cartItems[item]['index']]['quantityRemaining']
+              if(quantity) {
+                this.props.snack('Increased Quantity!')
+              }
               this.updateQuantity(item, -1)
-              this.props.snack('Increased Quantity!')
           }}>
             <AddButton />
           </MenuItem>
@@ -144,25 +150,13 @@ class Cart extends Component {
   }
 
   render() {
-    const style = {
-      text: {
-        textAlign: `right`,
-        marginRight: 10,
-        fontFamily: `sans-serif`,
-      },
-      checkout: {
-        textAlign: `right`,
-        marginRight: 6,
-      }
-    }
-
     return (
       <div>
           <List>
             {this.insideCart()}
             <Divider inset={true} />
-              <p style={style.text}>Total: $ {this.totalCost()}</p>
-              <div style={style.checkout}>
+              <p className="text">Total: $ {this.totalCost()}</p>
+              <div className="checkout">
                 <RaisedButton onClick={(e) => this.checkout()} label="Checkout" />
               </div>
           </List>

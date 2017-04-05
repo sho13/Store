@@ -1,0 +1,21 @@
+.name {
+  font-family: sans-serif;
+  text-align: center;
+}
+.images {
+  margin-left: 20px;
+  width: 150px;
+  height: 150px;
+}
+.button {
+  width: 100px;
+}
+.text {
+  text-align: right;
+  margin-right: 10px;
+  font-family: sans-serif;
+}
+.checkout {
+  text-align: right;
+  margin-right: 6px;
+}
