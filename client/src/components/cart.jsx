@@ -8,6 +8,7 @@ import Divider from 'material-ui/Divider';
 import Subheader from 'material-ui/Subheader';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
+import RaisedButton from 'material-ui/RaisedButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import RemoveFromCart from 'material-ui/svg-icons/action/remove-shopping-cart';
 import AddButton from 'material-ui/svg-icons/content/add-circle';
@@ -121,6 +122,10 @@ class Cart extends Component {
         textAlign: `right`,
         marginRight: 10,
         fontFamily: `sans-serif`,
+      },
+      checkout: {
+        textAlign: `right`,
+        marginRight: 6,
       }
     }
 
@@ -130,7 +135,9 @@ class Cart extends Component {
             {this.insideCart()}
             <Divider inset={true} />
               <p style={style.text}>Total: $ {this.totalCost()}</p>
-              <button onClick={(e) => this.checkout()}>Checkout</button>
+              <div style={style.checkout}>
+                <RaisedButton onClick={(e) => this.checkout()} label="Checkout" />
+              </div>
           </List>
       </div>
     )

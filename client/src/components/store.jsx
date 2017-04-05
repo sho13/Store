@@ -101,9 +101,9 @@ class Store extends Component {
       },
       appBar: {
         top: '0',
-        left: '0',
+        left: '25%',
         right: '0',
-        width: '100%',
+        width: '50%',
         height: 'inherit',
         backgroundColor: `#FAFAFA`,
       },
