@@ -9,6 +9,7 @@ import Subheader from 'material-ui/Subheader';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
+import Snackbar from 'material-ui/Snackbar';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import RemoveFromCart from 'material-ui/svg-icons/action/remove-shopping-cart';
 import AddButton from 'material-ui/svg-icons/content/add-circle';
@@ -20,10 +21,14 @@ import {grey400, darkBlack, lightBlack} from 'material-ui/styles/colors';
 class Cart extends Component {
   constructor(props) {
     super(props);
-    this.state = null;
+    this.state = {
+      snackbar: false,
+    };
     this.updateQuantity = this.updateQuantity.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
     this.checkout = this.checkOut.bind(this);
+    this.handleTouchTap = this.handleTouchTap.bind(this);
+    this.handleRequestClose = this.handleRequestClose.bind(this);
   }
 
   deleteItem(itemName, del) {
@@ -50,6 +55,14 @@ class Cart extends Component {
     }
   }
 
+  handleTouchTap() {
+    this.setState({snackbar: true});
+  };
+
+  handleRequestClose() {
+    this.setState({snackbar: false});
+  };
+
   checkOut() {
     var cart = this.props.shopItems.cartItems;
     if(Object.keys(cart).length === 0 && cart.constructor === Object){
@@ -62,7 +75,6 @@ class Cart extends Component {
   }
 
   insideCart() {
-
 
     if(!this.props.shopItems.cartItems) {
       return (
@@ -82,8 +94,20 @@ class Cart extends Component {
           <MoreVertIcon color={grey400} />
         </IconButton>
       );
+
       let rightIconMenu = (
         <IconMenu iconButtonElement={iconButtonElement}>
+          <div>
+            <MenuItem onTouchTap={this.handleTouchTap} onClick={(e) => this.updateQuantity(item, -1)}>
+              <AddButton />
+            </MenuItem>
+            <Snackbar
+              open={this.state.snackbar}
+              message="Increased Quantity!"
+              autoHideDuration={3000}
+              onRequestClose={this.handleRequestClose}
+            />
+          </div>
           <MenuItem onClick={(e) => this.updateQuantity(item, -1)}><AddButton /></MenuItem>
           <MenuItem onClick={(e) => this.updateQuantity(item, 1)}><MinusButton /></MenuItem>
           <MenuItem onClick={(e) => this.deleteItem(item, true)}><RemoveFromCart /></MenuItem>
