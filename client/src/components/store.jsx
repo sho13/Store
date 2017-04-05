@@ -8,6 +8,8 @@ import { GridList, GridTile } from 'material-ui/GridList';
 import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
 import IconButton from 'material-ui/IconButton';
+import RaisedButton from 'material-ui/RaisedButton';
+
 import FontIcon from 'material-ui/FontIcon';
 import AddShoppingCart from 'material-ui/svg-icons/action/add-shopping-cart';
 import ShoppingCart from 'material-ui/svg-icons/action/shopping-cart';
@@ -60,6 +62,9 @@ class Store extends Component {
       images: {
         width: 150,
         height: 100,
+      },
+      button: {
+        width: `100`,
       }
     }
 
@@ -75,8 +80,8 @@ class Store extends Component {
           key={value.imgSrc}
           title={`$` + value.price.toFixed(2)}
           subtitle={`Quantity: ` + value.quantityRemaining}
-          actionIcon={<IconButton onClick={(e) => this.updateQuantity(i, -1)} ><AddShoppingCart /></IconButton>}
-          >
+          actionIcon={<div style={style.button}><RaisedButton icon={<AddShoppingCart />} onClick={(e) => this.updateQuantity(i, -1)} /></div>}
+        >
           <h2 style={style.name}>{value.itemName}</h2>
           <img style={style.images} src={value.imgSrc} />
         </GridTile>
@@ -101,9 +106,9 @@ class Store extends Component {
       },
       appBar: {
         top: '0',
-        left: '25%',
+        left: '30%',
         right: '0',
-        width: '50%',
+        width: '40%',
         height: 'inherit',
         backgroundColor: `#FAFAFA`,
       },
