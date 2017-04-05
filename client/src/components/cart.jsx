@@ -2,10 +2,23 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { updateItem, checkout, addToCart, removeFromCart } from '../actions/index.js'
+import Style from '../style/style.css';
+import {List, ListItem} from 'material-ui/List';
+import Divider from 'material-ui/Divider';
+import Subheader from 'material-ui/Subheader';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import RemoveFromCart from 'material-ui/svg-icons/action/remove-shopping-cart';
+import AddButton from 'material-ui/svg-icons/content/add-circle';
+import MinusButton from 'material-ui/svg-icons/content/remove-circle';
+import IconButton from 'material-ui/IconButton';
+import {grey400, darkBlack, lightBlack} from 'material-ui/styles/colors';
+
 
 class Cart extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = null;
     this.updateQuantity = this.updateQuantity.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
@@ -39,15 +52,17 @@ class Cart extends Component {
   checkOut() {
     var cart = this.props.shopItems.cartItems;
     if(Object.keys(cart).length === 0 && cart.constructor === Object){
-      alert('Please add your items to cart!')
+      alert('Please add your items to cart!');
     } else {
       cart = {};
       this.props.dispatch(checkout(cart));
-      alert('Thank you for shopping!')
+      alert('Thank you for shopping!');
     }
   }
 
   insideCart() {
+
+
     if(!this.props.shopItems.cartItems) {
       return (
         <div>
@@ -56,15 +71,37 @@ class Cart extends Component {
       )
     }
     return Object.keys(this.props.shopItems.cartItems).map(item => {
+
+      const iconButtonElement = (
+        <IconButton
+          touch={true}
+          tooltip="more"
+          tooltipPosition="bottom-left"
+        >
+          <MoreVertIcon color={grey400} />
+        </IconButton>
+      );
+      let rightIconMenu = (
+        <IconMenu iconButtonElement={iconButtonElement}>
+          <MenuItem onClick={(e) => this.updateQuantity(item, -1)}><AddButton /></MenuItem>
+          <MenuItem onClick={(e) => this.updateQuantity(item, 1)}><MinusButton /></MenuItem>
+          <MenuItem onClick={(e) => this.deleteItem(item, true)}><RemoveFromCart /></MenuItem>
+        </IconMenu>
+      );
+
       return (
-        <div>
-          <h5>{item}</h5>
-          <p>Price: ${this.props.shopItems.cartItems[item]['price'].toFixed(2)}</p>
-          <span><p>Quantity: {this.props.shopItems.cartItems[item]['quantity']}</p></span>
-          <span><button onClick={(e) => this.updateQuantity(item, -1)}> Increase Quantity </button></span>
-          <span><button onClick={(e) => this.updateQuantity(item, 1)}> Decrease Quantity </button></span>
-          <span><button onClick={(e) => this.deleteItem(item, true)}>Remove Item</button></span>
-        </div>
+        <ListItem
+          rightIconButton={rightIconMenu}
+          primaryText={item}
+          secondaryText={
+            <p>
+              <span style={{color:darkBlack}}>Price: ${this.props.shopItems.cartItems[item]['price'].toFixed(2)}</span> --
+              Quantity: {this.props.shopItems.cartItems[item]['quantity']}
+            </p>
+          }
+          secondaryTextLines={2}
+          />
+
       )
     })
   }
@@ -79,12 +116,22 @@ class Cart extends Component {
   }
 
   render() {
+    const style = {
+      text: {
+        textAlign: `right`,
+        marginRight: 10,
+        fontFamily: `sans-serif`,
+      }
+    }
+
     return (
       <div>
-        <h1>Cart</h1>
-        {this.insideCart()}
-        <p>Total: ${this.totalCost()}</p>
-        <button onClick={(e) => this.checkout()}>Checkout</button>
+          <List>
+            {this.insideCart()}
+            <Divider inset={true} />
+              <p style={style.text}>Total: $ {this.totalCost()}</p>
+              <button onClick={(e) => this.checkout()}>Checkout</button>
+          </List>
       </div>
     )
   }

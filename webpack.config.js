@@ -20,6 +20,12 @@ module.exports = {
           'babel-loader',
         ],
       },
+      {
+        test: /\.css$/,
+        use: [
+          'css-loader',
+        ],
+      },
     ],
   },
   resolve: {
