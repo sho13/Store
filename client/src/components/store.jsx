@@ -34,7 +34,7 @@ class Store extends Component {
     this.handleMenuSnack = this.handleMenuSnack.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
      axios.get('/shopitems').
      then((res) => {
        this.props.dispatch(shopItems(res.data));
@@ -71,6 +71,7 @@ class Store extends Component {
 
   updateQuantity(index, action) {
     var obj = this.props.shopItems.shopItems[index];
+    console.log('obj:: ',obj);
     if(obj['quantityRemaining'] > 0) {
       obj['quantityRemaining'] = obj['quantityRemaining'] + action;
       this.props.dispatch(updateItem(index, obj));
@@ -210,7 +211,6 @@ class Store extends Component {
 function mapStateToProps(state) {
   return {
     shopItems: state.shopItems,
-    cartItems: state.cartItems
   };
 }
 

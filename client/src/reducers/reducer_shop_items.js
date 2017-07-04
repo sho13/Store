@@ -5,7 +5,9 @@ var DEFAULT_STATE = {
 
 const setItem = (state, action) => {
   const newState = {};
+
   Object.assign(newState, state, { shopItems: action.payLoad });
+
   return newState;
 }
 

@@ -1,4 +1,8 @@
-# insticator-codetest
+# Store
+
+## Information
+
+A light-weight full stack React with Redux application that showcases a store with preset items.
 
 ## Getting Started
 
