@@ -18,7 +18,7 @@ export function updateItem(index, obj) {
     obj
   };
 }
-
+const fuckyeah = 'fuckyeah'
 export function addToCart(obj, name) {
   return {
     type: ADD_CART_ITEMS,
