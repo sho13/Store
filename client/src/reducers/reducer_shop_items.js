@@ -16,29 +16,41 @@ const setQuantity = (state, action) => {
    action.obj,
    ...state.shopItems.slice(action.index + 1)];
   const newState = {};
+
   Object.assign(newState, state, { shopItems: newArr });
+
   return newState;
 }
 
 const addItem = (state, action) => {
   var newObj = Object.assign({}, state.cartItems);
+
   newObj[action.name] = action.obj;
+
   let newState = {};
+
   Object.assign(newState, state, {cartItems: newObj});
+
   return newState;
 }
 
 const removeItem = (state, action) => {
   var newObj = Object.assign({}, state.cartItems);
+
   let newState = {};
+
   Object.assign(newState, state, {cartItems: newObj});
+
   return newState;
 }
 
 const checkout = (state, action) => {
   var newObj = Object.assign({}, action.obj);
+
   let newState = {};
+
   Object.assign(newState, state, {cartItems: newObj});
+  
   return newState;
 }
 

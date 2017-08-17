@@ -17,6 +17,8 @@ import ShoppingCart from 'material-ui/svg-icons/action/shopping-cart';
 import Shop from 'material-ui/svg-icons/action/store';
 import Cart from './cart.jsx';
 
+const bitchezzzzz = 'bitchezzzzzz';
+
 class Store extends Component {
   constructor(props) {
     super(props);
